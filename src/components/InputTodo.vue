@@ -13,6 +13,8 @@
 </template>
 
 <script>
+const STORAGE_KEY = 'todos'
+
 export default {
   name: 'InputTodo',
   data() {
@@ -24,15 +26,15 @@ export default {
   },
   methods: {
     addTodo() {
-      if (localStorage.getItem('todos')) {
-        this.task = JSON.parse(localStorage.getItem('todos'))
+      if (localStorage.getItem(STORAGE_KEY)) {
+        this.task = JSON.parse(localStorage.getItem(STORAGE_KEY))
       }
 
       this.task.push({title: this.title,
                   description: this.description,
-                  completed: 'false',
+                  completed: false,
                   id: this.task.length + 1})
-      localStorage.setItem('todos', JSON.stringify(this.task))
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.task))
 
       this.title = this.description = ''
       this.$store.state.status = true

@@ -8,9 +8,7 @@
           +e.title Insert task
           InputTodo
         +e.list-wrap
-          +b.card
-            +e.title Tasks list
-            Taskitem
+          Taskitem
 
 </template>
 
@@ -43,5 +41,5 @@ export default {
       align-items center
 
     &__list-wrap
-      margin-top 30px
+      margin-top 50px
 </style>
