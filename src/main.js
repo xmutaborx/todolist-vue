@@ -2,6 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
+import './assets/styles/components.styl'
+import './assets/styles/settings.styl'
+import './assets/styles/fonts.styl'
+
 import './registerServiceWorker'
 
 Vue.config.productionTip = false
