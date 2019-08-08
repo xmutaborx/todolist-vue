@@ -42,7 +42,7 @@
             +b.BUTTON.btn(@click="completeTask(task, key)") Complete
 
         //- completed tasks
-        li(v-for="(task, key) in tasks" v-if="!activePage && task.completed == true")
+        li.completed(v-for="(task, key) in tasks" v-if="!activePage && task.completed == true")
           .wrap
             +e.text Id:
               span  {{ task.id }}
@@ -69,8 +69,7 @@
 
           +e.btn-wrap
             +b.BUTTON.btn--delete(@click="deleteTask(key)") Delete
-            //- +b.BUTTON.btn(@click="editTask(task, key)") Edit
-            +b.BUTTON.btn(@click="completeTask(task, key)") Incompleted
+            +b.BUTTON.btn--incompleted(@click="completeTask(task, key)") Incompleted
 
 </template>
 
@@ -143,11 +142,16 @@ export default {
     padding 0
   li
     border-bottom 1px solid #dedede
-    padding-bottom 10px
+    padding 10px
     display flex
     justify-content space-between
+
     & + &
       margin-top 10px
+
+    &.completed
+      background rgba(115, 222, 174, 0.4)
+      border-radius 15px
 
   .task
     &__text
