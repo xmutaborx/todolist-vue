@@ -26,18 +26,20 @@ export default {
   },
   methods: {
     addTodo() {
-      if (localStorage.getItem(STORAGE_KEY)) {
-        this.task = JSON.parse(localStorage.getItem(STORAGE_KEY))
+      if (this.title) {
+        if (localStorage.getItem(STORAGE_KEY)) {
+          this.task = JSON.parse(localStorage.getItem(STORAGE_KEY))
+        }
+
+        this.task.push({title: this.title,
+                    description: this.description,
+                    completed: false,
+                    id: this.task.length + 1})
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(this.task))
+
+        this.title = this.description = ''
+        this.$store.state.status = true
       }
-
-      this.task.push({title: this.title,
-                  description: this.description,
-                  completed: false,
-                  id: this.task.length + 1})
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.task))
-
-      this.title = this.description = ''
-      this.$store.state.status = true
     },
   }
 }

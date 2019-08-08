@@ -8,27 +8,25 @@
           +e.title Insert task
           InputTodo
         +e.list-wrap
-          Taskitem
+          TaskList
 
 </template>
 
 <script>
 import InputTodo from '../components/InputTodo'
-import Taskitem from '../components/Taskitem'
+import TaskList from '../components/TaskList'
 
 export default {
   name: 'home',
   components: {
     InputTodo,
-    Taskitem
+    TaskList
   }
 }
 </script>
 
 <style lang="stylus">
   .todolist
-    padding-top 50px
-
     &__container
       max-width 1440px
       padding 0 25px

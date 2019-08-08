@@ -7,34 +7,36 @@
                         @click="toggleActivePage") Active
       +b.BUTTON.btn-card(v-bind:class="{ active: !activePage }"
                         @click="toggleCompletedPage") Completed
-    +e.title Tasks list
+
+    +e.title {{activePage ? 'Active Tasks' : 'Completed Task'}}
     +b.task
       ul
         //- active tasks
-        li(v-for="(task, key) in tasks" v-if="activePage && task.completed == false")
-          .wrap
-            +e.text Id:
-              span  {{ task.id }}
+        li(v-for="(task, key) in tasks"
+          v-if="activePage && task.completed == false")
+          +e.wrap
+            +e.row
+              +e.id ID: {{ task.id }}
 
-            +e.text Task:
-              span(v-if="taskStatusEdit != key")
-                |  {{ task.title }}
+            +e.row
+              +e.type Task:
+              +e.text(v-if="taskStatusEdit != key"
+                      v-on:dblclick="editTask(task, key)")
+                | {{ task.title }}
 
-              input.input-todo(type="text"
+              textarea.edit-todo(type="text"
                             v-model="task.title"
                             v-if="taskStatusEdit == key"
                             v-on:keyup.enter="editTask(task, key)")
 
-            +e.text Desciption:
-              span(v-if="taskStatusEdit != key") {{ task.description }}
+            +e.row
+              +e.type Desciption:
+              +e.text(v-if="taskStatusEdit != key") {{ task.description }}
 
-              input.input-todo(type="text"
+              textarea.edit-todo(type="text"
                             v-model="task.description"
                             v-if="taskStatusEdit == key"
                             v-on:keyup.enter="editTask(task, key)")
-
-            +e.text Status:
-              span  {{ task.completed }}
 
           +e.btn-wrap
             +b.BUTTON.btn--delete(@click="deleteTask(key)") Delete
@@ -42,30 +44,20 @@
             +b.BUTTON.btn(@click="completeTask(task, key)") Complete
 
         //- completed tasks
-        li.completed(v-for="(task, key) in tasks" v-if="!activePage && task.completed == true")
+
+        li.completed(v-for="(task, key) in tasks"
+                    v-if="!activePage && task.completed == true")
           .wrap
-            +e.text Id:
-              span  {{ task.id }}
+            +e.row
+              +e.id ID: {{ task.id }}
 
-            +e.text Task:
-              span(v-if="taskStatusEdit != key")
-                |  {{ task.title }}
+            +e.row
+              +e.type Task:
+              +e.text {{ task.title }}
 
-              input.input-todo(type="text"
-                            v-model="task.title"
-                            v-if="taskStatusEdit == key"
-                            v-on:keyup.enter="editTask(task, key)")
-
-            +e.text Desciption:
-              span(v-if="taskStatusEdit != key") {{ task.description }}
-
-              input.input-todo(type="text"
-                            v-model="task.description"
-                            v-if="taskStatusEdit == key"
-                            v-on:keyup.enter="editTask(task, key)")
-
-            +e.text Status:
-              span  {{ task.completed }}
+            +e.row
+              +e.type Desciption:
+              +e.text {{ task.description }}
 
           +e.btn-wrap
             +b.BUTTON.btn--delete(@click="deleteTask(key)") Delete
@@ -78,7 +70,7 @@ const STORAGE_KEY = 'todos'
 import { mapState } from 'vuex'
 
 export default {
-  name: 'Taskitem',
+  name: 'TaskList',
   data() {
     return {
       tasks: [],
@@ -154,18 +146,22 @@ export default {
       border-radius 15px
 
   .task
-    &__text
+    &__wrap
+      width 100%
+      padding-right 30px
+
+    &__id
+      font-size 13px
+      font-weight 600
+
+    &__type
       font-weight 600
       margin-bottom 5px
-      max-width 400px
 
-      & span
-        font-weight 400
-        padding-left 10px
-        word-wrap break-word
-
-      & input
-        margin-left 10px
+    &__row
+      margin-bottom 15px
+      display flex
+      flex-direction column
 
     &__btn-wrap
       display flex
