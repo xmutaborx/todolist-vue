@@ -31,7 +31,9 @@
 
             +e.row
               +e.type Desciption:
-              +e.text(v-if="taskStatusEdit != key") {{ task.description }}
+              +e.text(v-if="taskStatusEdit != key"
+                      v-on:dblclick="editTask(task, key)")
+                | {{ task.description }}
 
               textarea.edit-todo(type="text"
                             v-model="task.description"
@@ -124,7 +126,6 @@ export default {
     )
   }
 }
-
 </script>
 
 <style lang="stylus" scoped>
