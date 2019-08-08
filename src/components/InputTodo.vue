@@ -3,8 +3,10 @@
 
   +b.insert
     +e.wrapper
-      +b.INPUT.input-todo(type="text" v-model="title" placeholder="Введите задание *")
-      +b.INPUT.input-todo(type="text" v-model="description" placeholder="Введите описание")
+      +b.INPUT.input-todo(type="text" v-model="title" placeholder="Введите задание *"
+                          v-on:keyup.enter="addTodo")
+      +b.INPUT.input-todo(type="text" v-model="description" placeholder="Введите описание"
+                          v-on:keyup.enter="addTodo")
 
       +e.btn-wrap
         button.btn(@click="addTodo" :disabled="!title") Apply
