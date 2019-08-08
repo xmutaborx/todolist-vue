@@ -8,16 +8,18 @@
           +e.text Id:
             span  {{ task.id }}
           +e.text Task:
-            span(v-if="!taskStatus")
+            span(v-if="taskStatus != key")
               |  {{ task.title }}
             input.input-todo(type="text"
                           v-model="task.title"
-                          v-if="taskStatus")
+                          v-if="taskStatus == key"
+                          v-on:keyup.enter="editTask(task, key)")
           +e.text Desciption:
-            span(v-if="!taskStatus") {{ task.description }}
+            span(v-if="taskStatus != key") {{ task.description }}
             input.input-todo(type="text"
                           v-model="task.description"
-                          v-if="taskStatus")
+                          v-if="taskStatus == key"
+                          v-on:keyup.enter="editTask(task, key)")
           +e.text Status:
             span  {{ task.completed }}
         +e.btn-wrap
@@ -35,7 +37,7 @@ export default {
   data() {
     return {
       tasks: [],
-      taskStatus: false,
+      taskStatus: 'close',
     }
   },
   methods: {
@@ -46,14 +48,15 @@ export default {
       this.$store.state.status = true
     },
     editTask(task, key) {
-      this.taskStatus = !this.taskStatus
-
-      if (this.taskStatus == false) {
+      if (this.taskStatus != key) {
+        this.taskStatus = key
+      } else {
         let base = JSON.parse(localStorage.getItem(STORAGE_KEY))
         base[key].title = task.title
         base[key].description = task.description
         localStorage.setItem(STORAGE_KEY, JSON.stringify(base))
         this.$store.state.status = true
+        this.taskStatus = 'close'
       }
     },
   },
