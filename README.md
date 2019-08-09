@@ -1,6 +1,7 @@
 Todolist
 
-VUE
+VUE<br>
+Vuex
 PUG
 Bemto
 Stylus
