@@ -5,7 +5,7 @@
   <li>PUG</li>
   <li>Bemto</li>
   <li>Stylus</li>
-
+  <li>db: localStorage</li>
 
 <hr>
 <p>yarn</p>
