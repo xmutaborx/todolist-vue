@@ -8,7 +8,9 @@ export default new Vuex.Store({
     status: false
   },
   mutations: {
-
+    toggle(state, status) {
+      state.status = status
+    }
   },
   actions: {
 

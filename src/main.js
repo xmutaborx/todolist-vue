@@ -4,8 +4,8 @@ import router from './router'
 import store from './store'
 
 import './assets/styles/components.styl'
-import './assets/styles/settings.styl'
 import './assets/styles/fonts.styl'
+import './assets/styles/settings.styl'
 
 import './registerServiceWorker'
 

@@ -3,12 +3,20 @@
 
   +b.card
     +e.card-buttons
-      +b.BUTTON.btn-card(v-bind:class="{ active: activePage }"
-                        @click="toggleActivePage") Active
-      +b.BUTTON.btn-card(v-bind:class="{ active: !activePage }"
-                        @click="toggleCompletedPage") Completed
+      +b.BUTTON.btn-card(
+        v-bind:class="{ active: activePage }"
+        @click="togglePage('active')"
+      )
+        | Active
+        +e.active {{taskCount}}
 
-    +e.title {{activePage ? 'Active Tasks' : 'Completed Task'}}
+      +b.BUTTON.btn-card(
+        v-bind:class="{ active: !activePage }"
+        @click="togglePage('completed')"
+      )
+        | Completed
+
+    +e.title {{activePage ? 'Active Tasks' : 'Completed Tasks'}}
     +b.task
       ul
         //- active tasks
@@ -20,25 +28,33 @@
 
             +e.row
               +e.type Task:
-              +e.text(v-if="taskStatusEdit != key"
-                      v-on:dblclick="editTask(task, key)")
+              +e.text(
+                v-if="taskStatusEdit != key"
+                v-on:dblclick="editTask(task, key)"
+              )
                 | {{ task.title }}
 
-              textarea.edit-todo(type="text"
-                            v-model="task.title"
-                            v-if="taskStatusEdit == key"
-                            v-on:keyup.enter="editTask(task, key)")
+              textarea.edit-todo(
+                type="text"
+                v-model="task.title"
+                v-if="taskStatusEdit == key"
+                @keyup.enter="editTask(task, key)"
+              )
 
             +e.row
               +e.type Desciption:
-              +e.text(v-if="taskStatusEdit != key"
-                      v-on:dblclick="editTask(task, key)")
+              +e.text(
+                v-if="taskStatusEdit != key"
+                @dblclick="editTask(task, key)"
+              )
                 | {{ task.description }}
 
-              textarea.edit-todo(type="text"
-                            v-model="task.description"
-                            v-if="taskStatusEdit == key"
-                            v-on:keyup.enter="editTask(task, key)")
+              textarea.edit-todo(
+                type="text"
+                v-model="task.description"
+                v-if="taskStatusEdit == key"
+                @keyup.enter="editTask(task, key)"
+              )
 
           +e.btn-wrap
             +b.BUTTON.btn--delete(@click="deleteTask(key)") Delete
@@ -68,7 +84,7 @@
 </template>
 
 <script>
-const STORAGE_KEY = 'todos'
+import global from '../assets/global/variables.js'
 import { mapState } from 'vuex'
 
 export default {
@@ -82,45 +98,54 @@ export default {
   },
   methods: {
     deleteTask(id) {
-      let base = JSON.parse(localStorage.getItem(STORAGE_KEY))
-      base.splice(id, 1)
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(base))
-      this.$store.state.status = true
+      this.tasks.splice(id, 1)
+      localStorage.setItem(global.STORAGE_KEY, JSON.stringify(this.tasks))
+      this.$store.commit('toggle', true)
     },
     editTask(task, key) {
       if (this.taskStatusEdit != key) {
         this.taskStatusEdit = key
       } else {
-        let base = JSON.parse(localStorage.getItem(STORAGE_KEY))
-        base[key].title = task.title
-        base[key].description = task.description
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(base))
-        this.$store.state.status = true
+        this.tasks[key].title = task.title
+        this.tasks[key].description = task.description
+        localStorage.setItem(global.STORAGE_KEY, JSON.stringify(this.tasks))
+        this.$store.commit('toggle', true)
         this.taskStatusEdit = 'close'
       }
     },
     completeTask(task, key) {
-      let base = JSON.parse(localStorage.getItem(STORAGE_KEY))
-      base[key].completed = !base[key].completed
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(base))
-      this.$store.state.status = true
+      this.tasks[key].completed = !this.tasks[key].completed
+      localStorage.setItem(global.STORAGE_KEY, JSON.stringify(this.tasks))
+      this.$store.commit('toggle', true)
     },
-    toggleCompletedPage() {
-      this.activePage = false
+    togglePage(param) {
+      if (!this.activePage && param == 'active') {
+        this.activePage = true
+      } else if (this.activePage && param == 'completed') {
+        this.activePage = false
+      }
     },
-    toggleActivePage() {
-      this.activePage = true
+  },
+  computed: {
+    taskCount() {
+      let count = 0
+      for (var key in this.tasks) {
+        if (this.tasks[key].completed == false) {
+          count++
+        }
+      }
+      return count
     }
   },
   created() {
-    this.tasks = JSON.parse(localStorage.getItem(STORAGE_KEY))
+    this.tasks = JSON.parse(localStorage.getItem(global.STORAGE_KEY))
   },
   mounted() {
     this.$store.watch(
       (state) => {
         if (state.status == true) {
-          this.tasks = JSON.parse(localStorage.getItem(STORAGE_KEY))
-          state.status = false
+          this.tasks = JSON.parse(localStorage.getItem(global.STORAGE_KEY))
+          this.$store.commit('toggle', false)
         }
       }
     )
