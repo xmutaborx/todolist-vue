@@ -90,7 +90,7 @@
               +e.text {{ task.description }}
 
             +e.row
-              +e.type Date: #[span {{ taskTimer(task.date) }}]
+              +e.type Date: #[span {{ taskDate(task.date) }}]
 
           +e.btn-wrap
             +b.BUTTON.btn--delete(@click="deleteTask(key)") Delete
