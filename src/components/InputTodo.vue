@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import global from '../assets/global/variables.js'
+import global from '../assets/global/constants.js'
 
 export default {
   name: 'InputTodo',
@@ -44,17 +44,16 @@ export default {
         if (localStorage.getItem(global.STORAGE_KEY)) {
           this.tasks = JSON.parse(localStorage.getItem(global.STORAGE_KEY))
         }
-
         this.tasks.push({
                     title: this.title,
                     description: this.description,
                     completed: false,
-                    id: this.tasks.length + 1
+                    id: this.tasks.length + 1,
+                    date: new Date()
                   })
         localStorage.setItem(global.STORAGE_KEY, JSON.stringify(this.tasks))
 
         this.title = this.description = ''
-        // this.$store.state.status = true
         this.$store.commit('toggle', true)
       }
     },
