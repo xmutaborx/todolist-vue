@@ -1,1 +1,6 @@
-Todolist vue
+Todolist
+
+VUE
+PUG
+Bemto
+Stylus
