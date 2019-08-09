@@ -8,5 +8,13 @@
   <li>Stylus</li>
   <li>db: localStorage</li>
 <hr>
+<ul>
+  <li>Add task</li>
+  <li>Delete task</li>
+  <li>Complete/incomplete task</li>
+  <li>Edit task</li>
+  <li>Date task</li>
+  <li><s>Timer</s></li>
+<hr>
 <p>yarn</p>
 <p>yarn serve</p>
